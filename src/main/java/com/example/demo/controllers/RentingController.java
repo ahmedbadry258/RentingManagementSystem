@@ -20,14 +20,13 @@ public class RentingController {
     private CarService carService;
     @RequestMapping("/renting")
     public List<Renting> findAll(){
-
         return rentingService.findAll();
     }
 
 
 
     @PostMapping("/renting")
-    public Renting saveCar(@RequestBody Renting renting){
+    public Renting saveCar(@RequestBody Renting renting)throws Exception{
 
         return rentingService.saveRenting(renting);
     }

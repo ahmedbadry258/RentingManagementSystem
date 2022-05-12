@@ -4,20 +4,24 @@ import com.example.demo.services.CarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 class CarTest {
 
     @InjectMocks
     private CarService carService;
-    private CarRepository carRepository=Mockito.mock(CarRepository.class);
+    @Mock
+    private CarRepository carRepository;//=Mockito.mock(CarRepository.class);
 @BeforeEach
 public void setUp(){
     carService= new CarService(carRepository);
@@ -42,17 +46,23 @@ public void setUp(){
     @Test
     @DisplayName("test Save Car")
     public void testSaveCar(){
-        Car abc= new Car(1001,"abc");
+        Car abc= new Car(101,"abc");
         Mockito.when(carRepository.save(abc)).thenReturn(abc);
-        assertEquals(1001,carService.saveCar(abc).getId());
+        assertEquals(101,carService.saveCar(abc).getId());
     }
     @Test
     @DisplayName("test Throw Exception")
     public void testThrowException(){
         Car abc= new Car(1001,"");
-        Mockito.when(carRepository.save(abc)).thenThrow(new IllegalArgumentException("Car Name Not is Empty"));
+        Mockito.when(carRepository.save(abc)).thenThrow(new IllegalArgumentException("Car Name is Not Empty"));
             IllegalArgumentException exception=assertThrows(IllegalArgumentException.class,()->carService.saveCar(abc));
-        assertEquals("Car Name Not is Empty",exception.getMessage());
+        assertEquals("Car Name is Not Empty",exception.getMessage());
 }
+    @Test
+    @DisplayName("test Do Throws")
+    public void testDoThrows(){
 
+        Mockito.doThrow(RuntimeException.class).when(carRepository).findAll();
+        assertThrows(RuntimeException.class,()->carService.findAll());
+    }
 }

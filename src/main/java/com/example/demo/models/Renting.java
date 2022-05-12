@@ -45,4 +45,24 @@ private Car car;
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
+
+    public Renting(Long id, LocalDate day, String customerName, Car car) {
+        this.id = id;
+        this.day = day;
+        this.customerName = customerName;
+        this.car = car;
+    }
+
+    public Renting() {
+    }
+
+    @Override
+    public String toString() {
+        return "Renting{" +
+                "id=" + id +
+                ", day=" + day +
+                ", customerName='" + customerName + '\'' +
+                ", car=" + car +
+                '}';
+    }
 }
